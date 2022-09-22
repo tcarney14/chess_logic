@@ -5,6 +5,7 @@ from enum import Enum
 
 class Board:
 
+    # map chessboard rank to numpy array represenation index
     rank_to_index = {"1": 0, 
                     "2": 1,
                     "3": 2,
@@ -14,6 +15,7 @@ class Board:
                     "7": 6,
                     "8": 7}
 
+    # map chessboard file to numpy array representation index
     file_to_index = {"a": 0,
                     "b": 1,
                     "c": 2,
@@ -23,6 +25,7 @@ class Board:
                     "g": 6,
                     "h": 7}
 
+    # initial chessboard setup
     default_config = {
         "White": [
             {"square": "a1", "piece": Pieces.ROOK},
@@ -64,7 +67,7 @@ class Board:
 
     def __init__(self, config=default_config):
         self.board = np.zeros((8,8))
-
+        self.ply = "White"
         self.setup(config)
 
     def setup(self, config):
@@ -76,10 +79,20 @@ class Board:
             self.board[rank][file] = piece["piece"].value * -1
 
     def square_str_to_index(self, square: str) -> Tuple:
+        """
+        
+        """
         file = Board.file_to_index[square[0]]
         rank = Board.rank_to_index[square[1]]
 
         return (file, rank)
+
+    def advance_turn(self):
+        if self.ply == "White":
+            self.ply = "Black"
+        else:
+            self.ply = "White"
+        
 
     def display(self):
         print(self.board)
