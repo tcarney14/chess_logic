@@ -2,9 +2,9 @@ from board import Board
 
 class Game:
 
-    def __init__(self, board: Board):
+    def __init__(self, board: Board, player1: Player, player2: Player):
         self.board = board
-
+        self.players = [player1, player2]
 
     def play():
 

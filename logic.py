@@ -3,8 +3,9 @@ from board import Board
 
 class ChessLogic:
 
-    def get_valid_moves(board: Board) -> List:
+    def get_valid_moves(board: Board, int: ply) -> List:
         moves = []
+        for 
 
     def _pawn_moves(rank: int, file: int) -> List:
         
@@ -70,6 +71,15 @@ class ChessLogic:
             cur_file += 1
 
         return moves
+
+    def _queen_moves(rank: int, file: int) -> List:
+        return []
+
+    def _rook_moves(rank: int, file: int) -> List:
+        return []
+    
+    def _knight_moves(rank: int, file: int) -> List:
+        return []
             
     @staticmethod
     def _on_board(rank: int, file: int) -> bool:
@@ -78,3 +88,4 @@ class ChessLogic:
         if file < 0 or file > 7:
             return False
         return True
+

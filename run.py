@@ -1,4 +1,9 @@
+from game import Game
 from board import Board
 
 board = Board()
-board.display()
+
+game = Game(board)
+
+game.board.display()
+

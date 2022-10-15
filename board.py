@@ -5,6 +5,9 @@ from enum import Enum
 
 class Board:
 
+    WHITE = 0
+    BLACK = 1
+
     # map chessboard rank to numpy array represenation index
     rank_to_index = {"1": 0, 
                     "2": 1,
@@ -67,7 +70,7 @@ class Board:
 
     def __init__(self, config=default_config):
         self.board = np.zeros((8,8))
-        self.ply = "White"
+        self.ply = Board.WHITE
         self.setup(config)
 
     def setup(self, config):
@@ -88,11 +91,15 @@ class Board:
         return (file, rank)
 
     def advance_turn(self):
-        if self.ply == "White":
-            self.ply = "Black"
+        if self.ply == Board.WHITE:
+            self.ply = Board.BLACK
         else:
-            self.ply = "White"
+            self.ply = Board.WHITE
         
 
     def display(self):
         print(self.board)
+
+
+
+
