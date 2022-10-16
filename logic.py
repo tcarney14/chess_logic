@@ -72,14 +72,56 @@ class ChessLogic:
 
         return moves
 
-    def _queen_moves(rank: int, file: int) -> List:
-        return []
-
     def _rook_moves(rank: int, file: int) -> List:
-        return []
+        moves = []
+
+        cur_rank = rank
+        cur_file = file
+        cur_rank +=1
+        while ChessLogic._on_board(cur_rank, cur_file):
+            moves.append((cur_rank, cur_file))
+            cur_rank += 1
+        
+        cur_rank = rank
+        cur_file = file
+        cur_rank -=1
+        while ChessLogic._on_board(cur_rank, cur_file):
+            moves.append((cur_rank, cur_file))
+            cur_rank -= 1
+
+        cur_rank = rank
+        cur_file = file
+        cur_file +=1
+        while ChessLogic._on_board(cur_rank, cur_file):
+            moves.append((cur_rank, cur_file))
+            cur_file += 1
+        
+        cur_rank = rank
+        cur_file = file
+        cur_file -=1
+        while ChessLogic._on_board(cur_rank, cur_file):
+            moves.append((cur_rank, cur_file))
+            cur_file -= 1
+
+        return moves
+
+    def _queen_moves(rank: int, file: int) -> List:
+        return _bishop_moves + _rook_moves
     
     def _knight_moves(rank: int, file: int) -> List:
-        return []
+        moves = []
+
+        moves.append((rank + 2, file - 1))
+        moves.append((rank + 2, file + 1))
+        moves.append((rank + 1, file - 2))
+        moves.append((rank + 1, file + 2))
+        moves.append((rank - 1, file - 2))
+        moves.append((rank - 1, file + 2))
+        moves.append((rank - 2, file - 1))
+        moves.append((rank - 2, file + 1))
+
+        return moves
+
             
     @staticmethod
     def _on_board(rank: int, file: int) -> bool:
