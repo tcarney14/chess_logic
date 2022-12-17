@@ -18,7 +18,7 @@ class Board:
                     "7": 6,
                     "8": 7}
 
-    # map chessboard file to numpy array representation index
+    # map chessboard file_ to numpy array representation index
     file_to_index = {"a": 0,
                     "b": 1,
                     "c": 2,
@@ -75,26 +75,29 @@ class Board:
 
     def setup(self, config):
         for piece in config["White"]:
-            file, rank = self.square_str_to_index(piece["square"])
-            self.board[rank][file] = piece["piece"].value
+            file_, rank = self.square_str_to_index(piece["square"])
+            self.board[rank][file_] = piece["piece"].value
         for piece in config["Black"]:
-            file, rank = self.square_str_to_index(piece["square"])
-            self.board[rank][file] = piece["piece"].value * -1
+            file_, rank = self.square_str_to_index(piece["square"])
+            self.board[rank][file_] = piece["piece"].value * -1
 
     def square_str_to_index(self, square: str) -> Tuple:
         """
         
         """
-        file = Board.file_to_index[square[0]]
+        file_ = Board.file_to_index[square[0]]
         rank = Board.rank_to_index[square[1]]
 
-        return (file, rank)
+        return (file_, rank)
 
     def advance_turn(self):
         if self.ply == Board.WHITE:
             self.ply = Board.BLACK
         else:
             self.ply = Board.WHITE
+
+    def execute_move(move: Tuple):
+        pass
         
 
     def display(self):
