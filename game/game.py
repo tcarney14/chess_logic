@@ -1,6 +1,6 @@
-from board import Board
-from Players.player import Player
-from logic import get_valid_moves, check_mates
+from game.board import Board
+from players.player import Player
+from game.logic import get_valid_moves, check_mates
 
 class Game:
 

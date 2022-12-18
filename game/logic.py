@@ -1,6 +1,6 @@
 from typing import List
-from board import Board
-from pieces import Pieces
+from game.board import Board
+from game.pieces import Pieces
 
 
 def get_valid_moves(board: Board) -> List:

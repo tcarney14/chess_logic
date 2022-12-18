@@ -1,5 +1,5 @@
 import abc
-from board import Board
+from game.board import Board
 
 class Player(metaclass=abc.ABCMeta):
 	@abc.abstractmethod

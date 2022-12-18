@@ -1,6 +1,6 @@
 from typing import Tuple
 import numpy as np
-from pieces import Pieces
+from game.pieces import Pieces
 
 class Board:
 

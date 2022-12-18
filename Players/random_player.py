@@ -1,6 +1,6 @@
 import random
-from player import Player
-from board import Board
+from players.player import Player
+from game.board import Board
 
 class RandomPlayer(Player):
 
