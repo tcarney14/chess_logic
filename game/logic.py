@@ -9,9 +9,9 @@ def get_valid_moves(board: Board) -> List:
     pieces = board.get_pieces()
 
     for piece in pieces:
-        file_, rank = board.square_str_to_index(piece["square"])
+        file_, rank = piece["file"], piece["rank"]
         moves = move_function[piece["piece"]](file_, rank)
-        valid_moves.append(moves)
+        valid_moves.extend(moves)
 
     return valid_moves
 
@@ -145,10 +145,10 @@ def _on_board(file_: int, rank: int) -> bool:
     return True
 
 move_function = {
-    Pieces.PAWN: pawn_moves,
-    Pieces.KING: _king_moves,
-    Pieces.BISHOP: _bishop_moves,
-    Pieces.KNIGHT: _knight_moves,
-    Pieces.ROOK: _rook_moves,
-    Pieces.QUEEN: _queen_moves
+    Pieces.PAWN.value: pawn_moves,
+    Pieces.KING.value: _king_moves,
+    Pieces.BISHOP.value: _bishop_moves,
+    Pieces.KNIGHT.value: _knight_moves,
+    Pieces.ROOK.value: _rook_moves,
+    Pieces.QUEEN.value: _queen_moves
 }

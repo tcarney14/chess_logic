@@ -1,6 +1,7 @@
 from typing import Tuple
 import numpy as np
 from game.pieces import Pieces
+import operator
 
 class Board:
 
@@ -106,6 +107,20 @@ class Board:
 
     def display(self):
         print(self.board)
+
+    def get_pieces(self):
+        pieces = []
+        if self.ply == 1:
+            comparison = operator.gt
+        else:
+            comparison = operator.lt
+        for i, row in enumerate(self.board):
+            for j, square in enumerate(row):
+                if comparison(square, 0):
+                    piece = {"rank": i, "file": j, "piece": int(abs(square))}
+                    pieces.append(piece)
+
+        return pieces
 
 
 
