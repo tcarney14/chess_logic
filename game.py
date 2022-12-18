@@ -1,6 +1,6 @@
 from board import Board
 from Players.player import Player
-from logic import ChessLogic
+from logic import get_valid_moves, check_mates
 
 class Game:
 
@@ -16,12 +16,12 @@ class Game:
 
             cur_player = self.players[self.board.ply]
 
-            valid_moves = ChessLogic.get_valid_moves(self.board)
+            valid_moves = get_valid_moves(self.board)
 
             move = cur_player.play(self.board, valid_moves)
 
             self.board.execute_move(move)
 
-            mate = ChessLogic.check_mates(self.board)
+            mate = check_mates(self.board)
 
             self.board.advance_turn()

@@ -1,7 +1,6 @@
 from typing import Tuple
 import numpy as np
 from pieces import Pieces
-from enum import Enum
 
 class Board:
 
@@ -96,9 +95,14 @@ class Board:
         else:
             self.ply = Board.WHITE
 
-    def execute_move(move: Tuple):
-        pass
+    def execute_move(self, move: Tuple):
+        start_square, end_square = move
+        start_file, start_rank = self.square_str_to_index(start_square)
+        end_file, end_rank = self.square_str_to_index(end_square)
         
+        self.board[end_file][end_rank] = self.board[start_file][start_rank]
+
+        self.board[start_file][start_rank] = 0
 
     def display(self):
         print(self.board)
