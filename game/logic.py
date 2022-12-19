@@ -1,7 +1,9 @@
 from typing import List
+from collections import namedtuple
 from game.board import Board
 from game.pieces import Pieces
 
+Move = namedtuple("Move", ["start", "dest"])
 
 def get_valid_moves(board: Board) -> List:
     valid_moves = []
@@ -10,8 +12,11 @@ def get_valid_moves(board: Board) -> List:
 
     for piece in pieces:
         file_, rank = piece["file"], piece["rank"]
-        moves = move_function[piece["piece"]](file_, rank)
-        valid_moves.extend(moves)
+        start = (file_, rank)
+        destinations = move_function[piece["piece"]](file_, rank)
+        for dest in destinations:
+            if _on_board(dest[0], dest[1]):
+                valid_moves.append(Move(start, dest))
 
     return valid_moves
 

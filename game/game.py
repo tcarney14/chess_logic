@@ -1,6 +1,7 @@
 from game.board import Board
 from players.player import Player
-from game.logic import get_valid_moves, check_mates
+from game import logic
+import time
 
 class Game:
 
@@ -10,18 +11,21 @@ class Game:
 
     def play(self):
 
-        mate = False
+        mate = logic.check_mates(self.board)
 
         while not mate:
 
             cur_player = self.players[self.board.ply]
 
-            valid_moves = get_valid_moves(self.board)
+            valid_moves = logic.get_valid_moves(self.board)
 
             move = cur_player.play(self.board, valid_moves)
+            print(move)
 
             self.board.execute_move(move)
 
-            mate = check_mates(self.board)
+            mate = logic.check_mates(self.board)
 
+            self.board.display()
+            time.sleep(5)
             self.board.advance_turn()

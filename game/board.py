@@ -97,18 +97,18 @@ class Board:
             self.ply = Board.WHITE
 
     def execute_move(self, move: Tuple):
-        start_square, end_square = move
-        start_file, start_rank = self.square_str_to_index(start_square)
-        end_file, end_rank = self.square_str_to_index(end_square)
+        start_square, dest_square = move
+        start_file, start_rank = start_square
+        dest_file, dest_rank = dest_square
         
-        self.board[end_file][end_rank] = self.board[start_file][start_rank]
+        self.board[dest_file][dest_rank] = self.board[start_file][start_rank]
 
         self.board[start_file][start_rank] = 0
 
     def display(self):
         print(self.board)
 
-    def get_pieces(self):
+    def get_pieces(self) -> list:
         pieces = []
         if self.ply == 1:
             comparison = operator.gt
