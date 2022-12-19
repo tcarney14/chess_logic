@@ -11,21 +11,25 @@ class Game:
 
     def play(self):
 
-        mate = logic.check_mates(self.board)
+        valid_moves = logic.get_valid_moves(self.board)
+        mate = logic.check_mates(self.board, valid_moves)
 
         while not mate:
 
-            cur_player = self.players[self.board.ply]
+            import pdb
+            pdb.set_trace()
 
-            valid_moves = logic.get_valid_moves(self.board)
+            cur_player = self.players[self.board.ply]
 
             move = cur_player.play(self.board, valid_moves)
             print(move)
 
             self.board.execute_move(move)
-
-            mate = logic.check_mates(self.board)
+            self.board.advance_turn()
+            
+            valid_moves = logic.get_valid_moves(self.board)
+            mate = logic.check_mates(self.board, valid_moves)
 
             self.board.display()
             time.sleep(5)
-            self.board.advance_turn()
+            

@@ -1,26 +1,31 @@
 from typing import List
+from copy import deepcopy
 from collections import namedtuple
 from game.board import Board
 from game.pieces import Pieces
 
 Move = namedtuple("Move", ["start", "dest"])
 
-def get_valid_moves(board: Board) -> List:
-    valid_moves = []
-    
-    pieces = board.get_pieces()
+def check_mates(board: Board, valid_moves: list):
+    if in_check(board):
+        for move in valid_moves:
+            look_ahead_board = deepcopy(board)
+            look_ahead_board.execute_move(move)
+            if not in_check(look_ahead_board):
+                return False  
+    return True
 
-    for piece in pieces:
-        file_, rank = piece["file"], piece["rank"]
-        start = (file_, rank)
-        destinations = move_function[piece["piece"]](file_, rank)
-        for dest in destinations:
-            if _on_board(dest[0], dest[1]):
-                valid_moves.append(Move(start, dest))
+def in_check(board: Board):
+    look_ahead_board = deepcopy(board)
+    look_ahead_board.advance_turn()
+    opponent_moves = get_valid_moves(look_ahead_board)
 
-    return valid_moves
+    for move in opponent_moves:
+        _, dest = move
+        dest_file, dest_rank = dest
+        if look_ahead_board.board[dest_file][dest_rank] == Pieces.KING.value:
+            return True
 
-def check_mates(board: Board):
     return False
 
 def pawn_moves(file_: int, rank: int) -> List:
@@ -30,6 +35,10 @@ def pawn_moves(file_: int, rank: int) -> List:
     moves.append((file_, rank + 2))
     moves.append((file_ + 1, rank + 1))
     moves.append((file_ - 1, rank + 1))
+
+    for move in moves:
+        if not _on_board(move[0], move[1]):
+            moves.remove(move)
     
     return moves
 
@@ -45,6 +54,10 @@ def _king_moves(file_: int, rank: int) -> List:
     moves.append((file_ - 1, rank + 1))
     moves.append((file_ + 1, rank - 1))
     moves.append((file_ - 1, rank - 1))
+
+    for move in moves:
+        if not _on_board(move[0], move[1]):
+            moves.remove(move)
 
     return moves
 
@@ -139,6 +152,10 @@ def _knight_moves(file_: int, rank: int) -> List:
     moves.append((file_ - 1, rank - 2))
     moves.append((file_ + 1, rank - 2))
 
+    for move in moves:
+        if not _on_board(move[0], move[1]):
+            moves.remove(move)
+
     return moves
 
         
@@ -148,6 +165,22 @@ def _on_board(file_: int, rank: int) -> bool:
     if file_ < 0 or file_ > 7:
         return False
     return True
+
+
+def get_valid_moves(board: Board) -> List:
+    valid_moves = []
+    
+    pieces = board.get_pieces()
+
+    for piece in pieces:
+        file_, rank = piece["file"], piece["rank"]
+        start = (file_, rank)
+        destinations = move_function[piece["piece"]](file_, rank)
+        for dest in destinations:
+            if _on_board(dest[0], dest[1]):
+                valid_moves.append(Move(start, dest))
+
+    return valid_moves
 
 move_function = {
     Pieces.PAWN.value: pawn_moves,
