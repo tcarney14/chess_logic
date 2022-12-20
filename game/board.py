@@ -112,7 +112,17 @@ class Board:
 
     def square_occupied_self(self, file_: int, rank: int):
         """Check whether current player has a piece on the given square."""
-        comparison = self._get_focus()
+        comparison = self._get_focus("cur")
+
+        square = self.board[file_][rank]
+        if comparison(square, 0):
+            return True
+        else:
+            return False
+
+    def square_occupied_opponent(self, file_: int, rank: int):
+        """Check whether opponent has a piece on the given square."""
+        comparison = self._get_focus("opp")
 
         square = self.board[file_][rank]
         if comparison(square, 0):
@@ -120,21 +130,36 @@ class Board:
         else:
             return False
     
-    def _get_focus(self):
+    def _get_focus(self, focus: str):
         """
-        Get comparison operator which tells us if current player's pieces 
+        Get comparison operator which tells us if given player's pieces 
         are represented by positive or negative integers on board
+
+        parameters:
+            focus: str - either "cur" or "opp"
+        returns:
+            comparison - gt or lt operator
         """
-        if self.ply == 0:
-            comparison = operator.gt
-        else:
-            comparison = operator.lt
+
+        if focus == "cur":
+            #if it's white's turn, we care about positive valued pieces
+            if self.ply == 0:
+                comparison = operator.gt
+            else:
+                comparison = operator.lt
+        elif focus == "opp":
+            #if it's 's turn, we care about negative valued pieces
+            if self.ply == 0:
+                comparison = operator.lt
+            else:
+                comparison = operator.gt
 
         return comparison
 
     def get_pieces(self) -> list:
+        """Gets the current player's pieces"""
         pieces = []
-        comparison = self._get_focus()
+        comparison = self._get_focus("cur")
         for i, row in enumerate(self.board):
             for j, square in enumerate(row):
                 if comparison(square, 0):

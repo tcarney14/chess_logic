@@ -38,7 +38,7 @@ def pawn_moves(file_: int, rank: int, board: Board) -> List:
     moves.append((file_ - 1, rank + 1))
 
     for move in moves:
-        if not _on_board(move[0], move[1]):
+        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
             moves.remove(move)
     return moves
 
@@ -56,7 +56,7 @@ def _king_moves(file_: int, rank: int, board: Board) -> List:
     moves.append((file_ - 1, rank - 1))
 
     for move in moves:
-        if not _on_board(move[0], move[1]):
+        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
             moves.remove(move)
 
     return moves
@@ -69,17 +69,23 @@ def _bishop_moves(file_: int, rank: int, board: Board) -> List:
     cur_file_ = file_
     cur_rank +=1
     cur_file_ +=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank += 1
         cur_file_ += 1
-    
+
     cur_rank = rank
     cur_file_ = file_
     cur_rank +=1
     cur_file_ -=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank += 1
         cur_file_ -= 1
 
@@ -87,8 +93,11 @@ def _bishop_moves(file_: int, rank: int, board: Board) -> List:
     cur_file_ = file_
     cur_rank -=1
     cur_file_ -=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank -= 1
         cur_file_ -= 1
     
@@ -96,8 +105,11 @@ def _bishop_moves(file_: int, rank: int, board: Board) -> List:
     cur_file_ = file_
     cur_rank -=1
     cur_file_ +=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank -= 1
         cur_file_ += 1
 
@@ -110,29 +122,41 @@ def _rook_moves(file_: int, rank: int, board: Board) -> List:
     cur_rank = rank
     cur_file_ = file_
     cur_rank +=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank += 1
     
     cur_rank = rank
     cur_file_ = file_
     cur_rank -=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_rank -= 1
 
     cur_rank = rank
     cur_file_ = file_
     cur_file_ +=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_file_ += 1
     
     cur_rank = rank
     cur_file_ = file_
     cur_file_ -=1
-    while _on_board(cur_file_, cur_rank):
+    while _on_board(cur_file_, cur_rank) and not board.square_occupied_self(cur_file_, cur_rank):
         moves.append((cur_file_, cur_rank))
+
+        if board.square_occupied_opponent(cur_file_, cur_rank):
+            break
         cur_file_ -= 1
 
     return moves
@@ -153,7 +177,7 @@ def _knight_moves(file_: int, rank: int, board: Board) -> List:
     moves.append((file_ + 1, rank - 2))
 
     for move in moves:
-        if not _on_board(move[0], move[1]):
+        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
             moves.remove(move)
 
     return moves
