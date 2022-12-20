@@ -76,10 +76,10 @@ class Board:
     def setup(self, config):
         for piece in config["White"]:
             file_, rank = self.square_str_to_index(piece["square"])
-            self.board[rank][file_] = piece["piece"].value
+            self.board[file_][rank] = piece["piece"].value
         for piece in config["Black"]:
             file_, rank = self.square_str_to_index(piece["square"])
-            self.board[rank][file_] = piece["piece"].value * -1
+            self.board[file_][rank] = piece["piece"].value * -1
 
     def square_str_to_index(self, square: str) -> Tuple:
         """
@@ -95,6 +95,8 @@ class Board:
             self.ply = Board.BLACK
         else:
             self.ply = Board.WHITE
+        
+        self.board = np.flip(self.board, 0)
 
     def execute_move(self, move: Tuple):
         start_square, dest_square = move
@@ -108,12 +110,31 @@ class Board:
     def display(self):
         print(self.board)
 
-    def get_pieces(self) -> list:
-        pieces = []
-        if self.ply == 1:
+    def square_occupied_self(self, file_: int, rank: int):
+        """Check whether current player has a piece on the given square."""
+        comparison = self._get_focus()
+
+        square = self.board[file_][rank]
+        if comparison(square, 0):
+            return True
+        else:
+            return False
+    
+    def _get_focus(self):
+        """
+        Get comparison operator which tells us if current player's pieces 
+        are represented by positive or negative integers on board
+        """
+        if self.ply == 0:
             comparison = operator.gt
         else:
             comparison = operator.lt
+
+        return comparison
+
+    def get_pieces(self) -> list:
+        pieces = []
+        comparison = self._get_focus()
         for i, row in enumerate(self.board):
             for j, square in enumerate(row):
                 if comparison(square, 0):

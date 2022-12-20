@@ -7,15 +7,14 @@ from game.pieces import Pieces
 Move = namedtuple("Move", ["start", "dest"])
 
 def check_mates(board: Board, valid_moves: list):
-    import pdb
-    pdb.set_trace()
     if in_check(board):
         for move in valid_moves:
             look_ahead_board = deepcopy(board)
             look_ahead_board.execute_move(move)
             if not in_check(look_ahead_board):
                 return False  
-    return True
+        return True
+    return False
 
 def in_check(board: Board):
     look_ahead_board = deepcopy(board)
@@ -30,7 +29,7 @@ def in_check(board: Board):
 
     return False
 
-def pawn_moves(file_: int, rank: int) -> List:
+def pawn_moves(file_: int, rank: int, board: Board) -> List:
     
     moves = []
     moves.append((file_, rank + 1))
@@ -41,11 +40,10 @@ def pawn_moves(file_: int, rank: int) -> List:
     for move in moves:
         if not _on_board(move[0], move[1]):
             moves.remove(move)
-    
     return moves
 
 
-def _king_moves(file_: int, rank: int) -> List:
+def _king_moves(file_: int, rank: int, board: Board) -> List:
     moves = []
 
     moves.append((file_, rank + 1))
@@ -64,7 +62,7 @@ def _king_moves(file_: int, rank: int) -> List:
     return moves
 
 
-def _bishop_moves(file_: int, rank: int) -> List:
+def _bishop_moves(file_: int, rank: int, board: Board) -> List:
     moves = []
 
     cur_rank = rank
@@ -106,7 +104,7 @@ def _bishop_moves(file_: int, rank: int) -> List:
     return moves
 
 
-def _rook_moves(file_: int, rank: int) -> List:
+def _rook_moves(file_: int, rank: int, board: Board) -> List:
     moves = []
 
     cur_rank = rank
@@ -139,10 +137,10 @@ def _rook_moves(file_: int, rank: int) -> List:
 
     return moves
 
-def _queen_moves(file_: int, rank: int) -> List:
-    return _bishop_moves(file_, rank) + _rook_moves(file_, rank)
+def _queen_moves(file_: int, rank: int, board: Board) -> List:
+    return _bishop_moves(file_, rank, board) + _rook_moves(file_, rank, board)
 
-def _knight_moves(file_: int, rank: int) -> List:
+def _knight_moves(file_: int, rank: int, board: Board) -> List:
     moves = []
 
     moves.append((file_ - 1, rank + 2))
@@ -171,13 +169,11 @@ def _on_board(file_: int, rank: int) -> bool:
 
 def get_valid_moves(board: Board) -> List:
     valid_moves = []
-    
     pieces = board.get_pieces()
-
     for piece in pieces:
         file_, rank = piece["file"], piece["rank"]
         start = (file_, rank)
-        destinations = move_function[piece["piece"]](file_, rank)
+        destinations = move_function[piece["piece"]](file_, rank, board)
         for dest in destinations:
             if _on_board(dest[0], dest[1]):
                 valid_moves.append(Move(start, dest))

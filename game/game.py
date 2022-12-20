@@ -16,9 +16,6 @@ class Game:
 
         while not mate:
 
-            import pdb
-            pdb.set_trace()
-
             cur_player = self.players[self.board.ply]
 
             move = cur_player.play(self.board, valid_moves)
