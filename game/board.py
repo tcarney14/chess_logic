@@ -117,7 +117,7 @@ class Board:
         for i, row in enumerate(self.board):
             for j, square in enumerate(row):
                 if comparison(square, 0):
-                    piece = {"rank": i, "file": j, "piece": int(abs(square))}
+                    piece = {"file": i, "rank": j, "piece": int(abs(square))}
                     pieces.append(piece)
 
         return pieces

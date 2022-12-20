@@ -7,6 +7,8 @@ from game.pieces import Pieces
 Move = namedtuple("Move", ["start", "dest"])
 
 def check_mates(board: Board, valid_moves: list):
+    import pdb
+    pdb.set_trace()
     if in_check(board):
         for move in valid_moves:
             look_ahead_board = deepcopy(board)
