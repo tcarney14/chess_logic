@@ -30,6 +30,23 @@ class Board:
                     "g": 6,
                     "h": 7}
 
+    # map int values of pieces to char representation
+    char_mapping = {
+            Pieces.KING.value: "K",
+            Pieces.QUEEN.value: "Q",
+            Pieces.BISHOP.value: "B",
+            Pieces.KNIGHT.value: "N",
+            Pieces.ROOK.value: "R",
+            Pieces.PAWN.value: "P",
+            0: "  ",
+            -Pieces.KING.value: "k",
+            -Pieces.QUEEN.value: "q",
+            -Pieces.BISHOP.value: "b",
+            -Pieces.KNIGHT.value: "n",
+            -Pieces.ROOK.value: "r",
+            -Pieces.PAWN.value: "p",
+        }
+
     # initial chessboard setup
     default_config = {
         "White": [
@@ -175,29 +192,20 @@ class Board:
         char_board = self.to_char_matrix()
         table = Texttable()
         table.add_rows(char_board, header=False)
-        print(Back.GREEN + table.draw())
-
-
-
+        print(table.draw())
 
     def to_char_matrix(self):
         """Converts integer board matrix into chars"""
-
-        mapping = {
-            Pieces.KING.value: "K",
-            Pieces.QUEEN.value: "Q",
-            Pieces.BISHOP.value: "B",
-            Pieces.KNIGHT.value: "N",
-            Pieces.ROOK.value: "R",
-            Pieces.PAWN.value: "P",
-            0: "  "
-        }
-
         rows = []
-        for row in self.board:
+        view = self.board
+        if self.ply == Board.BLACK:
+            view = np.flip(self.board, 1)
+
+        view = np.rot90(view)
+        for row in view:
             char_row = []
             for square in row:
-                char_row.append(mapping[int(abs(square))])
+                char_row.append(Board.char_mapping[square])
             rows.append(char_row)
         
         return rows

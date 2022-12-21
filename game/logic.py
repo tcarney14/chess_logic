@@ -58,11 +58,12 @@ def _king_moves(file_: int, rank: int, board: Board) -> List:
     moves.append((file_ + 1, rank - 1))
     moves.append((file_ - 1, rank - 1))
 
+    valid_moves = []
     for move in moves:
-        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
-            moves.remove(move)
+        if _on_board(move[0], move[1]) and not board.square_occupied_self(move[0], move[1]):
+            valid_moves.append(move)
 
-    return moves
+    return valid_moves
 
 
 def _bishop_moves(file_: int, rank: int, board: Board) -> List:
@@ -179,11 +180,11 @@ def _knight_moves(file_: int, rank: int, board: Board) -> List:
     moves.append((file_ - 1, rank - 2))
     moves.append((file_ + 1, rank - 2))
 
+    valid_moves = []
     for move in moves:
-        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
-            moves.remove(move)
-
-    return moves
+        if _on_board(move[0], move[1]) and not board.square_occupied_self(move[0], move[1]):
+            valid_moves.append(move)
+    return valid_moves
 
         
 def _on_board(file_: int, rank: int) -> bool:
