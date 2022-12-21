@@ -2,6 +2,7 @@ from typing import Tuple
 import numpy as np
 from game.pieces import Pieces
 import operator
+from texttable import Texttable
 
 class Board:
 
@@ -107,8 +108,9 @@ class Board:
 
         self.board[start_file][start_rank] = 0
 
-    def display(self):
-        print(self.board)
+    def square_occupied(self, file_: int, rank: int):
+        """Check if any piece occupies given square"""
+        return self.square_occupied_self(file_, rank) or self.square_occupied_opponent(file_, rank)
 
     def square_occupied_self(self, file_: int, rank: int):
         """Check whether current player has a piece on the given square."""
@@ -148,7 +150,7 @@ class Board:
             else:
                 comparison = operator.lt
         elif focus == "opp":
-            #if it's 's turn, we care about negative valued pieces
+            #if it's white's turn, we care about negative valued pieces
             if self.ply == 0:
                 comparison = operator.lt
             else:
@@ -168,6 +170,30 @@ class Board:
 
         return pieces
 
+    def display(self):
+        table = Texttable()
+        table.add_rows(self.board, header=False)
+        print(table.draw())
 
 
 
+
+    def to_char_matrix(self):
+        """Converts integer board matrix into chars"""
+
+        mapping = {
+            Pieces.KING.value: "K",
+            Pieces.QUEEN.value: "Q",
+            Pieces.BISHOP.value: "B",
+            Pieces.KNIGHT.value: "N",
+            Pieces.ROOK.value: "R",
+            Pieces.PAWN.value: "P",
+            0: "  "
+        }
+
+        rows = []
+        for row in self.board:
+            char_row = []
+            for square in row:
+                char_row.append(mapping[square])
+            rows.append(char_row)

@@ -32,14 +32,17 @@ def in_check(board: Board):
 def pawn_moves(file_: int, rank: int, board: Board) -> List:
     
     moves = []
-    moves.append((file_, rank + 1))
-    moves.append((file_, rank + 2))
-    moves.append((file_ + 1, rank + 1))
-    moves.append((file_ - 1, rank + 1))
 
-    for move in moves:
-        if not _on_board(move[0], move[1]) or board.square_occupied_self(move[0], move[1]):
-            moves.remove(move)
+    if _on_board(file_, rank + 1) and not board.square_occupied(file_, rank + 1):
+        moves.append((file_, rank + 1))
+    #moves.append((file_, rank + 2)) ignore 2 square move for now
+    
+    #attacking moves
+    if _on_board(file_ + 1, rank + 1) and board.square_occupied_opponent(file_ + 1, rank + 1):
+        moves.append((file_ + 1, rank + 1))
+    if _on_board(file_ - 1, rank + 1) and board.square_occupied_opponent(file_ - 1, rank + 1):
+        moves.append((file_ - 1, rank + 1))
+
     return moves
 
 
