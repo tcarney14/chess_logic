@@ -70,7 +70,7 @@ class Board:
     }
 
     def __init__(self, config=default_config):
-        self.board = np.zeros((8,8))
+        self.board = np.zeros((8,8), dtype=int)
         self.ply = Board.WHITE
         self.setup(config)
 
@@ -171,8 +171,9 @@ class Board:
         return pieces
 
     def display(self):
+        char_board = self.to_char_matrix()
         table = Texttable()
-        table.add_rows(self.board, header=False)
+        table.add_rows(char_board, header=False)
         print(table.draw())
 
 
@@ -195,5 +196,7 @@ class Board:
         for row in self.board:
             char_row = []
             for square in row:
-                char_row.append(mapping[square])
+                char_row.append(mapping[int(abs(square))])
             rows.append(char_row)
+        
+        return rows
