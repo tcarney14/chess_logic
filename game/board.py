@@ -3,6 +3,7 @@ import numpy as np
 from game.pieces import Pieces
 import operator
 from texttable import Texttable
+from colorama import Fore, Back, Style
 
 class Board:
 
@@ -97,7 +98,7 @@ class Board:
         else:
             self.ply = Board.WHITE
         
-        self.board = np.flip(self.board, 0)
+        self.board = np.flip(self.board, 1)
 
     def execute_move(self, move: Tuple):
         start_square, dest_square = move
@@ -174,7 +175,7 @@ class Board:
         char_board = self.to_char_matrix()
         table = Texttable()
         table.add_rows(char_board, header=False)
-        print(table.draw())
+        print(Back.GREEN + table.draw())
 
 
 
