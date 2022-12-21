@@ -25,6 +25,7 @@ def in_check(board: Board):
         _, dest = move
         dest_file, dest_rank = dest
         if look_ahead_board.board[dest_file][dest_rank] == Pieces.KING.value:
+            print("CHECK")
             return True
 
     return False

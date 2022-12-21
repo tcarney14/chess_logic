@@ -1,0 +1,2 @@
+from players.random_player import RandomPlayer
+from players.greedy_player import GreedyPlayer
