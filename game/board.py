@@ -46,6 +46,15 @@ class Board:
             -Pieces.ROOK.value: "r",
             -Pieces.PAWN.value: "p",
         }
+    
+    material_value = {
+            Pieces.KING.value: 0,
+            Pieces.QUEEN.value: 9,
+            Pieces.BISHOP.value: 3,
+            Pieces.KNIGHT.value: 3,
+            Pieces.ROOK.value: 5,
+            Pieces.PAWN.value: 1,
+    }
 
     # initial chessboard setup
     default_config = {
@@ -209,3 +218,19 @@ class Board:
             rows.append(char_row)
         
         return rows
+
+    def material_difference(self):
+        comparison = self._get_focus("cur")
+
+        cur_material = 0
+        opp_material = 0
+
+        for row in self.board:
+            for square in row:
+                if comparison(square, 0):
+                    cur_material += Board.material_value[abs(square)]
+                elif square != 0:
+                    opp_material += Board.material_value[abs(square)]
+
+        return cur_material - opp_material
+

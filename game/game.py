@@ -28,5 +28,6 @@ class Game:
             mate = logic.check_mates(self.board, valid_moves)
 
             self.board.display()
+            print(self.board.material_difference())
             time.sleep(5)
             
