@@ -7,25 +7,29 @@ from game.pieces import Pieces
 Move = namedtuple("Move", ["start", "dest"])
 
 def check_mates(board: Board, valid_moves: list):
-    if in_check(board):
-        for move in valid_moves:
-            look_ahead_board = deepcopy(board)
-            look_ahead_board.execute_move(move)
-            if not in_check(look_ahead_board):
-                return False  
+    # if in_check(board):
+    #     for move in valid_moves:
+    #         look_ahead_board = deepcopy(board)
+    #         look_ahead_board.execute_move(move)
+    #         if not in_check(look_ahead_board):
+    #             return False  
+    #     return True
+    # return False
+
+    if len(valid_moves) == 0:
         return True
-    return False
+    else:
+        return False
 
 def in_check(board: Board):
     look_ahead_board = deepcopy(board)
     look_ahead_board.advance_turn()
-    opponent_moves = get_valid_moves(look_ahead_board)
+    opponent_moves = _get_all_moves(look_ahead_board)
 
     for move in opponent_moves:
         _, dest = move
         dest_file, dest_rank = dest
         if look_ahead_board.board[dest_file][dest_rank] == Pieces.KING.value:
-            print("CHECK")
             return True
 
     return False
@@ -198,16 +202,30 @@ def _on_board(file_: int, rank: int) -> bool:
 
 def get_valid_moves(board: Board) -> List:
     valid_moves = []
+    moves = _get_all_moves(board)
+    for move in moves:
+        look_ahead_board = deepcopy(board)
+        look_ahead_board.execute_move(move)
+        if not in_check(look_ahead_board):
+            valid_moves.append(move)
+
+    print(f"valid moves: {len(valid_moves)}")
+    print(f"all moves: {len(moves)}")
+    return valid_moves
+
+def _get_all_moves(board: Board):
+    """Gets all moves without verifying if we are check or not"""
+    moves = []
     pieces = board.get_pieces()
     for piece in pieces:
         file_, rank = piece["file"], piece["rank"]
         start = (file_, rank)
         destinations = move_function[piece["piece"]](file_, rank, board)
         for dest in destinations:
-            if _on_board(dest[0], dest[1]):
-                valid_moves.append(Move(start, dest))
+            move = Move(start, dest)
+            moves.append(move)
 
-    return valid_moves
+    return moves
 
 move_function = {
     Pieces.PAWN.value: pawn_moves,

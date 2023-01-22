@@ -4,7 +4,7 @@ from players import RandomPlayer, GreedyPlayer
 
 board = Board()
 
-game = Game(board, player1=RandomPlayer(), player2=GreedyPlayer())
+game = Game(board, player1=GreedyPlayer(), player2=RandomPlayer())
 
 game.play()
 
