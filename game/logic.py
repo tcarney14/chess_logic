@@ -7,15 +7,6 @@ from game.pieces import Pieces
 Move = namedtuple("Move", ["start", "dest"])
 
 def check_mates(board: Board, valid_moves: list):
-    # if in_check(board):
-    #     for move in valid_moves:
-    #         look_ahead_board = deepcopy(board)
-    #         look_ahead_board.execute_move(move)
-    #         if not in_check(look_ahead_board):
-    #             return False  
-    #     return True
-    # return False
-
     if len(valid_moves) == 0:
         return True
     else:
@@ -29,7 +20,7 @@ def in_check(board: Board):
     for move in opponent_moves:
         _, dest = move
         dest_file, dest_rank = dest
-        if look_ahead_board.board[dest_file][dest_rank] == Pieces.KING.value:
+        if int(abs(look_ahead_board.board[dest_file][dest_rank])) == Pieces.KING.value:
             return True
 
     return False

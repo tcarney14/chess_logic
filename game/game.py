@@ -29,5 +29,5 @@ class Game:
 
             self.board.display()
             print(self.board.material_difference())
-            time.sleep(5)
+            time.sleep(2)
             

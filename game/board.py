@@ -3,7 +3,6 @@ import numpy as np
 from game.pieces import Pieces
 import operator
 from texttable import Texttable
-from colorama import Fore, Back, Style
 
 class Board:
 
